@@ -1,0 +1,43 @@
+{% extends "events/base.html" %}
+
+{% block content %}
+  <section class="page-header stack">
+    <div class="stack">
+      <p class="eyebrow">Personal dashboard</p>
+      <h2 class="page-title">My Registrations</h2>
+      <p class="page-lead">Keep track of the events you already signed up for.</p>
+    </div>
+    <div class="page-actions">
+      <a class="btn btn-secondary" href="{% url 'home' %}">Back to events</a>
+    </div>
+  </section>
+
+  {% if registrations %}
+    <ul class="clean event-grid">
+      {% for reg in registrations %}
+        <li class="card event-card stack">
+          <div class="event-card__media">
+            <img src="{{ reg.event.image_url }}" alt="{{ reg.event.title }}" loading="lazy">
+            <span class="badge badge--overlay">{{ reg.event.category }}</span>
+          </div>
+          <div class="stack event-card__body">
+            <h3>{{ reg.event.title }}</h3>
+            <p class="meta">{{ reg.event.starts_at|date:"M d, Y g:i A" }} · {{ reg.event.location }}</p>
+            <p>Registered on {{ reg.created_at|date:"M d, Y" }}</p>
+            <div class="event-card__actions">
+              <span class="badge">Confirmed</span>
+              <a class="btn btn-primary" href="{% url 'event_detail' reg.event.id %}">Open Event</a>
+            </div>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <div class="card stack">
+      <p>You have not registered for any events yet.</p>
+      <div class="page-actions">
+        <a class="btn btn-primary" href="{% url 'home' %}">Browse Events</a>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

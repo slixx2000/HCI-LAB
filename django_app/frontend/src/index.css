@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 42 38% 96%;
+    --foreground: 216 24% 12%;
+    --card: 42 40% 98%;
+    --card-foreground: 216 24% 12%;
+    --popover: 42 40% 98%;
+    --popover-foreground: 216 24% 12%;
+    --primary: 172 72% 23%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 178 18% 92%;
+    --secondary-foreground: 216 24% 12%;
+    --muted: 40 20% 91%;
+    --muted-foreground: 215 14% 38%;
+    --accent: 172 44% 89%;
+    --accent-foreground: 172 72% 18%;
+    --border: 40 16% 82%;
+    --input: 40 16% 82%;
+    --ring: 172 72% 23%;
+    --radius: 0.75rem;
+  }
+
+  :root[data-theme='dark'] {
+    --background: 217 24% 10%;
+    --foreground: 41 33% 94%;
+    --card: 216 20% 14%;
+    --card-foreground: 41 33% 94%;
+    --popover: 216 20% 14%;
+    --popover-foreground: 41 33% 94%;
+    --primary: 165 74% 40%;
+    --primary-foreground: 216 24% 10%;
+    --secondary: 216 16% 22%;
+    --secondary-foreground: 41 33% 94%;
+    --muted: 215 15% 18%;
+    --muted-foreground: 214 22% 76%;
+    --accent: 215 17% 24%;
+    --accent-foreground: 41 33% 94%;
+    --border: 215 15% 28%;
+    --input: 215 15% 28%;
+    --ring: 165 74% 40%;
+  }
+
+  :root[data-contrast='high'] {
+    --foreground: 214 100% 4%;
+    --muted-foreground: 214 40% 20%;
+    --border: 214 70% 20%;
+    --ring: 214 100% 25%;
+  }
+
+  :root[data-theme='dark'][data-contrast='high'] {
+    --foreground: 0 0% 100%;
+    --muted-foreground: 0 0% 90%;
+    --border: 0 0% 85%;
+    --ring: 56 100% 65%;
+  }
+
+  :root[data-text-size='small'] {
+    font-size: 14px;
+  }
+
+  :root[data-text-size='medium'] {
+    font-size: 16px;
+  }
+
+  :root[data-text-size='large'] {
+    font-size: 18px;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: Georgia, 'Times New Roman', serif;
+    background-image: radial-gradient(circle at top right, rgba(186, 228, 220, 0.55), transparent 40%),
+      linear-gradient(180deg, rgb(250 248 242) 0%, rgb(245 242 234) 100%);
+  }
+
+  :root[data-theme='dark'] body {
+    background-image: radial-gradient(circle at top right, rgba(41, 96, 86, 0.35), transparent 45%),
+      linear-gradient(180deg, rgb(20 24 30) 0%, rgb(15 18 24) 100%);
+  }
+
+  body.a11y-bold h1,
+  body.a11y-bold h2,
+  body.a11y-bold h3,
+  body.a11y-bold h4,
+  body.a11y-bold h5,
+  body.a11y-bold p,
+  body.a11y-bold span,
+  body.a11y-bold a,
+  body.a11y-bold button,
+  body.a11y-bold label,
+  body.a11y-bold li,
+  body.a11y-bold input {
+    font-weight: 700 !important;
+  }
+}

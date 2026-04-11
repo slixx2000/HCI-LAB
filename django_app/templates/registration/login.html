@@ -1,0 +1,44 @@
+{% extends "events/base.html" %}
+
+{% block content %}
+  <section class="page-header stack">
+    <div class="stack">
+      <p class="eyebrow">Welcome back</p>
+      <h2 class="page-title">Login</h2>
+      <p class="page-lead">Use your campus account to register for events and view your registrations.</p>
+    </div>
+    <div class="page-actions">
+      <a class="btn btn-secondary" href="{% url 'home' %}">Back to events</a>
+      <a class="btn btn-ghost" href="{% url 'signup' %}">Create account</a>
+    </div>
+  </section>
+
+  <section class="card">
+    <form method="post" class="form stack" data-validate="true" novalidate>
+      {% csrf_token %}
+      {% if form.non_field_errors %}
+        <div class="field-errors" role="alert">
+          {{ form.non_field_errors }}
+        </div>
+      {% endif %}
+
+      <div class="field">
+        <label for="id_username">Username</label>
+        {{ form.username }}
+        <p class="field-hint">Enter the username you used when signing up.</p>
+        <div class="field-errors">{{ form.username.errors }}</div>
+      </div>
+
+      <div class="field">
+        <label for="id_password">Password</label>
+        {{ form.password }}
+        <p class="field-hint">Your password is never shown on screen.</p>
+        <div class="field-errors">{{ form.password.errors }}</div>
+      </div>
+
+      <div class="page-actions">
+        <button class="btn btn-primary" type="submit" data-submit-button data-loading-label="Signing in...">Login</button>
+      </div>
+    </form>
+  </section>
+{% endblock %}

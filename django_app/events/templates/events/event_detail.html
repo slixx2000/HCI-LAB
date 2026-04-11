@@ -1,0 +1,102 @@
+{% extends "events/base.html" %}
+
+{% block content %}
+  <section class="page-header stack">
+    <div class="stack">
+      <p class="eyebrow">Event details</p>
+      <h2 class="page-title">{{ event.title }}</h2>
+      <p class="page-lead">Review the key details before registering. You can go back anytime.</p>
+    </div>
+
+    <div class="page-actions">
+      <a class="btn btn-secondary" href="{% url 'home' %}">Back to events</a>
+      <span class="badge">{{ event.category }}</span>
+    </div>
+  </section>
+
+  <article class="card stack event-detail">
+    <div class="event-detail__hero">
+      <img src="{{ event.image_url }}" alt="{{ event.title }}" loading="lazy">
+    </div>
+
+    <div class="event-detail__grid">
+      <div class="stack">
+        <p class="meta">{{ event.starts_at|date:"l, M d, Y g:i A" }}</p>
+        <p>{{ event.description }}</p>
+      </div>
+
+      <aside class="section-card stack" aria-label="Registration summary">
+        <h3 class="section-title">Registration summary</h3>
+        <div class="detail-list">
+          <p><span>Location</span><strong>{{ event.location }}</strong></p>
+          <p><span>Capacity</span><strong>{{ event.capacity }}</strong></p>
+          <p><span>Spots left</span><strong>{{ event.spots_left }}</strong></p>
+        </div>
+
+        {% if user.is_authenticated %}
+          {% if is_registered %}
+            <div class="alert alert-success">You are already registered for this event.</div>
+          {% elif event.spots_left > 0 %}
+            <form method="post" class="stack" data-loading-form>
+              {% csrf_token %}
+              <button class="btn btn-primary" type="submit" data-submit-button data-loading-label="Registering...">Register for Event</button>
+              <p class="field-hint">Registration is instant. You can leave this page at any time.</p>
+            </form>
+          {% else %}
+            <div class="alert alert-error">This event is full.</div>
+          {% endif %}
+        {% else %}
+          <p class="field-hint">Sign in to register. Your information is saved in your browser session while you continue.</p>
+          <div class="page-actions">
+            <a class="btn btn-primary" href="{% url 'login' %}?next={% url 'event_detail' event.id %}">Login to Register</a>
+          </div>
+        {% endif %}
+      </aside>
+    </div>
+  </article>
+
+  <section class="card stack review-section">
+    <div class="stack">
+      <p class="eyebrow">Reviews</p>
+      <h3 class="section-title">Leave a review</h3>
+      <p class="page-lead">Read what other students thought about this event. Signed-in users can post their own review here.</p>
+    </div>
+
+    {% if user.is_authenticated %}
+      <form method="post" class="review-form stack" data-loading-form>
+        {% csrf_token %}
+        <input type="hidden" name="review_submit" value="1">
+        <div class="field">
+          <label for="id_body">Your review</label>
+          {{ review_form.body }}
+          {% if review_form.body.errors %}
+            <div class="field-errors">{{ review_form.body.errors|striptags }}</div>
+          {% else %}
+            <p class="field-hint">Write a short, respectful note about the event experience.</p>
+          {% endif %}
+        </div>
+        <button class="btn btn-primary" type="submit" data-submit-button data-loading-label="Posting review...">Post Review</button>
+      </form>
+    {% else %}
+      <div class="alert alert-info">
+        Please <a href="{% url 'login' %}?next={% url 'event_detail' event.id %}">sign in</a> to leave a review.
+      </div>
+    {% endif %}
+
+    {% if reviews %}
+      <div class="review-list stack">
+        {% for review in reviews %}
+          <article class="review-item">
+            <div class="review-item__header">
+              <strong>{{ review.user.username }}</strong>
+              <span class="meta">{{ review.created_at|date:"M d, Y" }}</span>
+            </div>
+            <p class="review-item__body">{{ review.body }}</p>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="field-hint">No reviews have been posted yet.</p>
+    {% endif %}
+  </section>
+{% endblock %}

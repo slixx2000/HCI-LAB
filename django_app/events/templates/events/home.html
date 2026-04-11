@@ -1,0 +1,57 @@
+{% extends "events/base.html" %}
+
+{% block content %}
+  <section class="page-header stack">
+    <div class="stack">
+      <p class="eyebrow">Campus calendar</p>
+      <h2 class="page-title">All Events</h2>
+      <p class="page-lead">Browse the latest campus events, filter by category, and open any event detail page in one click.</p>
+    </div>
+
+    <div class="page-actions">
+      <div class="badge">{{ event_count }} event{{ event_count|pluralize }}</div>
+      <a class="btn btn-secondary" href="{% url 'my_registrations' %}">My Registrations</a>
+    </div>
+  </section>
+
+  <section class="filter-bar" aria-label="Event categories">
+    {% for category in categories %}
+      <a
+        class="filter-pill{% if category == selected_category %} filter-pill--active{% endif %}"
+        href="{% url 'home' %}{% if category != 'All' %}?category={{ category|urlencode }}{% endif %}"
+      >
+        {{ category }}
+      </a>
+    {% endfor %}
+  </section>
+
+  {% if events %}
+    <ul class="clean event-grid">
+      {% for event in events %}
+        <li class="card event-card stack">
+          <div class="event-card__media">
+            <img src="{{ event.image_url }}" alt="{{ event.title }}" loading="lazy">
+            <span class="badge badge--overlay">{{ event.category }}</span>
+          </div>
+          <div class="stack event-card__body">
+            <h3>{{ event.title }}</h3>
+            <p class="meta">{{ event.starts_at|date:"M d, Y g:i A" }} · {{ event.location }}</p>
+            <p class="event-summary">{{ event.description|truncatewords:24 }}</p>
+            <div class="event-card__actions">
+              <span class="badge">{{ event.spots_left }} spots left</span>
+              <a class="btn btn-primary" href="{% url 'event_detail' event.id %}">View and Register</a>
+            </div>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <div class="card stack">
+      <p>No events match this filter.</p>
+      <div class="page-actions">
+        <a class="btn btn-primary" href="{% url 'home' %}">Clear filters</a>
+        <a class="btn btn-secondary" href="/admin/">Django admin</a>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

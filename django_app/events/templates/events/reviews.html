@@ -1,0 +1,29 @@
+{% extends "events/base.html" %}
+
+{% block content %}
+  <section class="page-header stack">
+    <div class="stack">
+      <p class="eyebrow">Community feedback</p>
+      <h2 class="page-title">All Reviews</h2>
+      <p class="page-lead">Browse student reviews across every event. Each entry shows the event name, the reviewer username, and the review text.</p>
+    </div>
+  </section>
+
+  {% if reviews %}
+    <div class="review-feed stack">
+      {% for review in reviews %}
+        <article class="card review-feed__item">
+          <p class="review-feed__meta">{{ review.event.title }} · {{ review.user.username }}</p>
+          <p class="review-feed__body">{{ review.body }}</p>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="card stack">
+      <p>No reviews have been posted yet.</p>
+      <div class="page-actions">
+        <a class="btn btn-primary" href="{% url 'home' %}">Browse Events</a>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "events/base.html" %}
+
+{% block content %}
+  <section class="page-header stack">
+    <div class="stack">
+      <p class="eyebrow">Create account</p>
+      <h2 class="page-title">Sign Up</h2>
+      <p class="page-lead">Create a campus account with just a username, email, and password.</p>
+    </div>
+    <div class="page-actions">
+      <a class="btn btn-secondary" href="{% url 'home' %}">Back to events</a>
+      <a class="btn btn-ghost" href="{% url 'login' %}">Login instead</a>
+    </div>
+  </section>
+
+  <section class="card">
+    <form method="post" class="form stack" data-validate="true" novalidate>
+      {% csrf_token %}
+      {% if form.non_field_errors %}
+        <div class="field-errors" role="alert">
+          {{ form.non_field_errors }}
+        </div>
+      {% endif %}
+
+      <div class="field">
+        <label for="id_username">Username</label>
+        {{ form.username }}
+        <p class="field-hint">{{ form.username.help_text }}</p>
+        <div class="field-errors">{{ form.username.errors }}</div>
+      </div>
+
+      <div class="field">
+        <label for="id_email">Email</label>
+        {{ form.email }}
+        <p class="field-hint">{{ form.email.help_text }}</p>
+        <div class="field-errors">{{ form.email.errors }}</div>
+      </div>
+
+      <div class="field">
+        <label for="id_password1">Password</label>
+        {{ form.password1 }}
+        <p class="field-hint">Use at least 8 characters.</p>
+        <div class="field-errors">{{ form.password1.errors }}</div>
+      </div>
+
+      <div class="field">
+        <label for="id_password2">Confirm Password</label>
+        {{ form.password2 }}
+        <p class="field-hint">Enter the same password again.</p>
+        <div class="field-errors">{{ form.password2.errors }}</div>
+      </div>
+
+      <div class="page-actions">
+        <button class="btn btn-primary" type="submit" data-submit-button data-loading-label="Creating account...">Sign Up</button>
+      </div>
+    </form>
+  </section>
+{% endblock %}
